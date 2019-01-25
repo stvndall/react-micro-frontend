@@ -1,0 +1,11 @@
+version: '3'
+services:
+  layout:
+    build: .
+    ports: [ 8080 ]
+  common:
+    build: fragments/common
+    ports: [ 3009 ]
+  app1:
+    build: fragments/app1
+    ports: [ 3011 ]
