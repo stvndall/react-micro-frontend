@@ -1,0 +1,7 @@
+{
+  "lerna": "3.10.7",
+  "packages": [
+    "fragments/*"
+  ],
+  "version": "0.0.0"
+}

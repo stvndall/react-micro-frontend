@@ -1,0 +1,22 @@
+{
+  "name": "frontendmicro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lerna": "3.10.7",
+    "babel-eslint": "^8.0.2",
+    "eslint": "^4.11.0",
+    "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-react": "^7.5.1",
+    "node-tailor": "^3.4.0",
+    "webpack": "^3.8.1"
+  }
+}
