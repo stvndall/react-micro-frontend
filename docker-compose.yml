@@ -3,9 +3,16 @@ services:
   layout:
     build: .
     ports: [ 8080 ]
+    network_mode: "host"
   common:
     build: fragments/common
-    ports: [ 3009 ]
+    environment:
+      PORT: 3009
+    ports: ["3009:3009" ]
+    network_mode: "host"
   app1:
     build: fragments/app1
-    ports: [ 3011 ]
+    environment:
+      PORT: 3011
+    ports: ["3011:3011"]
+    network_mode: "host"

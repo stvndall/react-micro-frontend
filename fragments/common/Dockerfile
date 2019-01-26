@@ -1,6 +1,9 @@
-FROM node:alpine
+FROM node:alpine as build
 COPY . /app
 WORKDIR /app
 RUN yarn && yarn build
 
-CMD ["yarn",  "start"]
+FROM stvndall/fragmentserver:latest
+COPY --from=build /app/public /server/
+
+
