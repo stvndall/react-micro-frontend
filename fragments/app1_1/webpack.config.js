@@ -26,6 +26,7 @@ module.exports = {
     'react-dom': 'react-dom',
     'prop-types': 'prop-types',
     'classnames': 'classnames',
-    'settings' : 'settings'
+    'settings' : 'settings',
+    'moduleLoader': 'moduleLoader'
   }
 }

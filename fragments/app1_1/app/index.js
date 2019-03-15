@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { settings } from 'settings'
-import RegisterMe from 'register-me'
+import Loader from 'moduleLoader'
 
 
-class App1 extends React.PureComponent {
+class App1_1 extends React.PureComponent {
 
     render() {
-        return (<div> this shows where App1_1 loading</div>
-        )
+        return null; /*<div> this shows where App1_1 loading</div>*/
     }
 }
 
 
-render(<App1/>, document.getElementById('app1'))
+render(<App1_1/>, document.getElementById('app1_1'))

@@ -15,4 +15,9 @@ services:
     environment:
       PORT: 3011
     ports: ["3011:3011"]
+  app1_1:
+    build: fragments/app1_1
+    environment:
+      PORT: 3022
+    ports: ["302:3022"]
     network_mode: "host"
