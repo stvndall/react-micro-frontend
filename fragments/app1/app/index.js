@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { render } from 'react-dom'
 import { settings } from 'settings'
 import Loader from 'moduleLoader'
 
-class App1 extends React.PureComponent {
+class App1 extends PureComponent {
 
-    state = { count: 1 };
+    constructor(){
+        super();
+        this.state = { count: 1 };
+    }
 
     render() {
 
@@ -18,7 +21,7 @@ class App1 extends React.PureComponent {
                 {JSON.stringify(settings)}
                 <Button onClick={() => this.setState({ count: this.state.count + 1 })}>click me</Button>
                 this shows where app1 would go, again</div>
-        )
+        );
     }
 }
 

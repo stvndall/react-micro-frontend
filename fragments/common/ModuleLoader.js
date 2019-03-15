@@ -8,8 +8,8 @@ const moduleLoader = {
         callbacks: {},
         callThemBack: function (name) {
             const callbacks = this.moduleFetcher.callbacks[ name ];
-            let i = 0;
-            for (i; i < callbacks.length; i++) {
+
+            for (var i = 0; i < callbacks.length; i++) {
                 callbacks[ i ](this.modules[ name ]);
             }
         },
@@ -53,6 +53,6 @@ const moduleLoader = {
     }
 };
 
-
-exports.registerMe = moduleLoader.interface.Register;
-exports.loadComponent = moduleLoader.interface.Loader;
+export default moduleLoader.interface;
+// exports.registerMe = moduleLoader.interface.Register;
+// exports.loadComponent = moduleLoader.interface.Loader;
