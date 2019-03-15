@@ -4,23 +4,22 @@
     <meta charset="UTF-8">
     <title>Front end micro attemp</title>
     <script>
-        debugger;
+        function requireMore(url, depName, callback) {
+            require([ url ])
+            define(depName, url, callback)
+            define([ depName ], console.log)
+        }
+    </script>
+    <script>
         (function (d) {
             require(d);
-            var arr = [ 'react', 'react-dom', 'prop-types', 'classnames', 'settings'];
+            var arr = [ 'react', 'react-dom', 'prop-types', 'classnames', 'settings', 'moduleLoader' ];
             while (i = arr.pop()) (function (dep) {
                 define(dep, d, function (b) {
                     return b[ dep ];
                 })
             })(i);
         }([ 'http://localhost:3009/public/bundle.js' ]));
-    </script>
-    <script>
-        debugger;
-        define(['settings'], function(settings){
-            console.log(settings)
-
-        })
     </script>
 </head>
 <body>
@@ -31,7 +30,7 @@
 
 
 <fragment src="http://localhost:3011"></fragment>
-<fragment src="localhost:3333" />
+<fragment src="localhost:3333"/>
 <!--<fragment src="http://localhost:3012"></fragment>
 <fragment src="http://localhost:3011"></fragment>-->
 

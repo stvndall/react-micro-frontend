@@ -1,25 +1,29 @@
 import React, { PureComponent } from 'react'
 import { render } from 'react-dom'
 import { settings } from 'settings'
-import Loader from 'moduleLoader'
+import { moduleLoader } from 'moduleLoader'
+
 
 class App1 extends PureComponent {
 
-    constructor(){
+
+
+    constructor() {
         super();
         this.state = { count: 1 };
+        this.Loader = new moduleLoader();
     }
 
     render() {
 
-        const l = Loader;
+        const l = moduleLoader;
+        const t = this.Loader;
         debugger;
-
+        t.Loader("app1_1", "http://localhost:3022/public/bundle.js");
         return (<div>
                 {this.state.count}
-                <input type="button"/>
                 {JSON.stringify(settings)}
-                <Button onClick={() => this.setState({ count: this.state.count + 1 })}>click me</Button>
+                <input type="button" onClick={() => this.setState({ count: this.state.count + 1 })}/>
                 this shows where app1 would go, again</div>
         );
     }
@@ -27,3 +31,6 @@ class App1 extends PureComponent {
 
 
 render(<App1/>, document.getElementById('app1'))
+
+
+exports.entry = App1;

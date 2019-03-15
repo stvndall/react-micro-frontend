@@ -1,58 +1,72 @@
-const moduleLoader = {
+import _ from 'lodash'
 
-    modules: {},
 
-    moduleFetcher: {
-        currentFetching: {},
+const CurrentModules = {};
 
-        callbacks: {},
-        callThemBack: function (name) {
-            const callbacks = this.moduleFetcher.callbacks[ name ];
+const CurrentFetching = {};
 
-            for (var i = 0; i < callbacks.length; i++) {
-                callbacks[ i ](this.modules[ name ]);
-            }
-        },
-        registerCallBack: function (name, callback) {
-            if (this.moduleFetcher.callbacks[ name ]) {
-                this.moduleFetcher.callbacks[ name ].push(callback);
-                return;
-            }
-            this.moduleFetcher.callbacks[ name ] = [ callback ];
-        },
+const Callbacks = {};
 
-        fetchNew: function (name, url) {
-            fetch(url).then((function (file) {
-                this.modules[ name ] = file;
-                delete this.moduleFetcher.currentFetching[ name ];
-                this.moduleFetcher.callThemBack(name);
-            }.bind(this)))
+class Modules {
+
+    constructor() {
+
+    }
+
+    callThemBack(name) {
+        const callbacks = Callbacks[ name ];
+        _.forEach(callbacks, (fn) => fn(CurrentModules[ name ]))
+    }
+
+    registerCallBack(name, callback) {
+        if (Callbacks[ name ]) {
+            Callbacks[ name ].push(callback);
+            return;
         }
+        Callbacks[ name ] = [ callback ];
+    }
+
+    fetchNew(name, url) {
+        debugger;
+        const callback = this.callThemBack;
+        requireMore(url, name + 'entry', function (b) {
+            debugger;
+            const entry = b.entry;
+            CurrentModules[ name ] = entry;
+            delete CurrentFetching[ name ];
+            callback(name);
+            return entry;
+        });
+    }
+}
 
 
-    },
+export class moduleLoader {
 
+    modules;
 
-    interface: {
-        Register: function (name, object) {
-            this.modules.name = object;
-        },
-        Loader: function (name, url) {
-            if (this.modules[ name ]) {
-                return [ this.modules[ name ], () => {
-                } ]
-            }
-            if (!this.moduleFetcher.currentFetching[ name ]) {
-                this.moduleFetcher.fetchNew(name, url)
-            }
-            const registerCallback = this.moduleFetcher.registerCallBack;
-            return [ null, function (fn) {
-                registerCallback(name, fn)
+    constructor() {
+        this.modules = new Modules()
+    }
+
+    Register(name, object) {
+        Modules.CurrentModules.name = object;
+    }
+
+    Loader(name, url) {
+        if (this.modules[ name ]) {
+            return [ this.modules[ name ], () => {
             } ]
         }
+        if (!CurrentFetching[ name ]) {
+            this.modules.fetchNew(name, url)
+        }
+        const registerCallback = this.modules.registerCallBack;
+        return [ null, function (fn) {
+            registerCallback(name, fn)
+        } ]
     }
-};
+}
 
-export default moduleLoader.interface;
 // exports.registerMe = moduleLoader.interface.Register;
 // exports.loadComponent = moduleLoader.interface.Loader;

@@ -18,6 +18,6 @@ const server = http.createServer((req, res) => {
     }
 })
 
-server.listen(3011, () => {
-    console.log('SPA Fragment Server started at 3011')
+server.listen(3022, () => {
+    console.log('SPA Fragment Server started at 3022')
 })

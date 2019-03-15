@@ -1,3 +1,4 @@
+import ModuleLoader from "./ModuleLoader"
 
 exports.react = require('react');
 exports['react-dom'] = require('react-dom');

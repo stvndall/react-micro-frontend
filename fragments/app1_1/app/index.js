@@ -15,3 +15,6 @@ console.log('loaded');
 
 //
 // render(<App1_1/>, document.getElementById('app1_1'));
+
+
+exports.entry = console.log;
