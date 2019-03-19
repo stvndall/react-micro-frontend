@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Front end micro attemp</title>
-    <script>
-        function requireMore(url, depName, callback) {
-            require([ url ])
-            define(depName, url, callback)
-            define([ depName ], console.log)
+    <script type="text/javascript">
+
+
+        function req(url, name, callback) {
+            const d = [url]
+            require(d)
+            const deps = !(name instanceof Array) ? [name] : name;
+            while (i = deps.pop()) (
+                function (dep) {
+                    define(dep, d, function (b) {
+                        (callback || function () { })(b)
+                        return b[dep];
+                    })
+                }
+            )(i)
+
         }
+
+        function requireMore(url, name, callback) {
+            function callMe(d) {
+                debugger;
+                if (callback) { callback(d) }
+            }
+            req(url, name, callMe)
+        }
+
     </script>
     <script>
-        (function (d) {
-            require(d);
-            var arr = [ 'react', 'react-dom', 'prop-types', 'classnames', 'settings', 'moduleLoader' ];
-            while (i = arr.pop()) (function (dep) {
-                define(dep, d, function (b) {
-                    return b[ dep ];
-                })
-            })(i);
-        }([ 'http://localhost:3009/public/bundle.js' ]));
+
+        req('http://localhost:3009/public/bundle.js', ['react', 'react-dom', 'prop-types', 'classnames', 'moduleLoader', 'settings'])
+
+            // (function (d) {
+            //     require(d);
+            //     var arr = ['react', 'react-dom', 'prop-types', 'classnames', 'moduleLoader', 'settings'];
+            //     while (i = arr.pop()) (function (dep) {
+            //         define(dep, d, function (b) {
+            //             return b[dep];
+            //         })
+            //     })(i);
+            // }(['http://localhost:3009/public/bundle.js']));
     </script>
+
+
+
 </head>
+
 <body>
 
-<div id="app1">app1 not loaded</div>
-<div id="app2">app2 not loaded</div>
-<div id="app3">app3 not loaded</div>
+    <div id="app1">app1 not loaded</div>
+    <div id="app2">app2 not loaded</div>
+    <div id="app3">app3 not loaded</div>
 
 
-<fragment src="http://localhost:3011"></fragment>
-<fragment src="localhost:3333"/>
-<!--<fragment src="http://localhost:3012"></fragment>
+    <fragment async src="http://localhost:3011"></fragment>
+    <!--<fragment src="http://localhost:3012"></fragment>
 <fragment src="http://localhost:3011"></fragment>-->
 
 </body>
+
 </html>

@@ -78,9 +78,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(2);
 
-var _settings = __webpack_require__(3);
-
 var _moduleLoader = __webpack_require__(4);
+
+var _settings = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -90,47 +90,64 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App1 = function (_PureComponent) {
-    _inherits(App1, _PureComponent);
+var App1_1 = null;
+
+var App1 = function (_React$PureComponent) {
+    _inherits(App1, _React$PureComponent);
 
     function App1() {
         _classCallCheck(this, App1);
 
         var _this = _possibleConstructorReturn(this, (App1.__proto__ || Object.getPrototypeOf(App1)).call(this));
 
-        _this.state = { count: 1 };
-        _this.Loader = new _moduleLoader.moduleLoader();
+        _this.state = { count: 0, App1_1Loaded: false };
         return _this;
     }
 
     _createClass(App1, [{
+        key: 'foundComponent',
+        value: function foundComponent(d) {
+            App1_1 = d;
+            this.setState({ App1_1Loaded: true });
+        }
+    }, {
+        key: 'loadNestedApp',
+        value: function loadNestedApp() {
+            var callback = this.foundComponent.bind(this);
+            var loader = new _moduleLoader.moduleLoader();
+
+            new _moduleLoader.moduleLoader().Loader("app1_1", "http://localhost:3022/public/bundle.js", callback);
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
 
-            var l = _moduleLoader.moduleLoader;
-            var t = this.Loader;
-            debugger;
-            t.Loader("app1_1", "http://localhost:3022/public/bundle.js");
             return _react2.default.createElement(
                 'div',
                 null,
                 this.state.count,
-                JSON.stringify(_settings.settings),
-                _react2.default.createElement('input', { type: 'button', onClick: function onClick() {
-                        return _this2.setState({ count: _this2.state.count + 1 });
-                    } }),
+                JSON.stringify(_settings.settings.setting),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.loadNestedApp.bind(this) },
+                    'this is a button '
+                ),
+                this.state.App1_1Loaded ? _react2.default.createElement(
+                    App1_1,
+                    { text: 'printToConsole' },
+                    ' '
+                ) : null,
                 'this shows where app1 would go, again'
             );
         }
     }]);
 
     return App1;
-}(_react.PureComponent);
+}(_react2.default.PureComponent);
 
 (0, _reactDom.render)(_react2.default.createElement(App1, null), document.getElementById('app1'));
 
-exports.entry = App1;
+document.createElement('script').attributes;
 
 /***/ }),
 /* 1 */

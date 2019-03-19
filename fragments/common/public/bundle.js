@@ -584,10 +584,8 @@ var Modules = function () {
     }, {
         key: 'fetchNew',
         value: function fetchNew(name, url) {
-            debugger;
             var callback = this.callThemBack;
             requireMore(url, name + 'entry', function (b) {
-                debugger;
                 var entry = b.entry;
                 CurrentModules[name] = entry;
                 delete CurrentFetching[name];
@@ -610,21 +608,31 @@ var moduleLoader = exports.moduleLoader = function () {
     _createClass(moduleLoader, [{
         key: 'Register',
         value: function Register(name, object) {
-            Modules.CurrentModules.name = object;
+            CurrentModules[name] = object;
+            if (CurrentFetching[name]) {
+                delete CurrentFetching[name];
+                if (Callbacks[name]) {
+                    var callbacks = Callbacks[name];
+                    while (i = callbacks.pop()) {
+                        i(object);
+                    }
+                    delete Callbacks[name];
+                }
+            }
         }
     }, {
         key: 'Loader',
-        value: function Loader(name, url) {
-            if (this.modules[name]) {
-                return [this.modules[name], function () {}];
+        value: function Loader(name, url, fn) {
+            if (CurrentModules[name]) {
+                return CurrentModules[name];
             }
             if (!CurrentFetching[name]) {
+                CurrentFetching[name] = name;
                 this.modules.fetchNew(name, url);
             }
             var registerCallback = this.modules.registerCallBack;
-            return [null, function (fn) {
-                registerCallback(name, fn);
-            }];
+            registerCallback(name, fn);
+            return null;
         }
     }]);
 

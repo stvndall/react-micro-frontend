@@ -1,36 +1,44 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { render } from 'react-dom'
-import { settings } from 'settings'
 import { moduleLoader } from 'moduleLoader'
+import { settings } from 'settings'
 
+let App1_1 = null;
 
-class App1 extends PureComponent {
-
+class App1 extends React.PureComponent {
 
 
     constructor() {
         super();
-        this.state = { count: 1 };
-        this.Loader = new moduleLoader();
+        this.state = { count: 0, App1_1Loaded: false }
+    }
+
+    foundComponent(d) {
+        App1_1 = d;
+        this.setState({ App1_1Loaded: true })
+    }
+
+
+    loadNestedApp() {
+        const callback = this.foundComponent.bind(this);
+        const loader = new moduleLoader();
+
+        new moduleLoader().Loader("app1_1", "http://localhost:3022/public/bundle.js", callback)
     }
 
     render() {
 
-        const l = moduleLoader;
-        const t = this.Loader;
-        debugger;
-        t.Loader("app1_1", "http://localhost:3022/public/bundle.js");
         return (<div>
-                {this.state.count}
-                {JSON.stringify(settings)}
-                <input type="button" onClick={() => this.setState({ count: this.state.count + 1 })}/>
-                this shows where app1 would go, again</div>
-        );
+            {this.state.count}
+            {JSON.stringify(settings.setting)}
+            <button onClick={this.loadNestedApp.bind(this)} >this is a button </button >
+            {this.state.App1_1Loaded?<App1_1 text="printToConsole"> </App1_1> : null}
+
+            this shows where app1 would go, again</div>)
     }
 }
 
 
-render(<App1/>, document.getElementById('app1'))
+render(<App1 />, document.getElementById('app1'))
 
-
-exports.entry = App1;
+document.createElement('script').attributes

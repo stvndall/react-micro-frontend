@@ -14,26 +14,24 @@ class Modules {
     }
 
     callThemBack(name) {
-        const callbacks = Callbacks[ name ];
-        _.forEach(callbacks, (fn) => fn(CurrentModules[ name ]))
+        const callbacks = Callbacks[name];
+        _.forEach(callbacks, (fn) => fn(CurrentModules[name]))
     }
 
     registerCallBack(name, callback) {
-        if (Callbacks[ name ]) {
-            Callbacks[ name ].push(callback);
+        if (Callbacks[name]) {
+            Callbacks[name].push(callback);
             return;
         }
-        Callbacks[ name ] = [ callback ];
+        Callbacks[name] = [callback];
     }
 
     fetchNew(name, url) {
-        debugger;
         const callback = this.callThemBack;
         requireMore(url, name + 'entry', function (b) {
-            debugger;
             const entry = b.entry;
-            CurrentModules[ name ] = entry;
-            delete CurrentFetching[ name ];
+            CurrentModules[name] = entry;
+            delete CurrentFetching[name];
             callback(name);
             return entry;
         });
@@ -50,21 +48,32 @@ export class moduleLoader {
     }
 
     Register(name, object) {
-        Modules.CurrentModules.name = object;
+        CurrentModules[name] = object;
+        if (CurrentFetching[name]) {
+            delete CurrentFetching[name]
+            if (Callbacks[name]) {
+                const callbacks = Callbacks[name]
+                while (i = callbacks.pop()) {
+                    i(object)
+                }
+                delete Callbacks[name]
+            }
+        }
     }
 
-    Loader(name, url) {
-        if (this.modules[ name ]) {
-            return [ this.modules[ name ], () => {
-            } ]
+    Loader(name, url, fn) {
+        if (CurrentModules[name]) {
+            return CurrentModules[name]
         }
-        if (!CurrentFetching[ name ]) {
+        if (!CurrentFetching[name]) {
+            CurrentFetching[name] = name;
             this.modules.fetchNew(name, url)
         }
         const registerCallback = this.modules.registerCallBack;
-        return [ null, function (fn) {
-            registerCallback(name, fn)
-        } ]
+        registerCallback(name, fn)
+        return null
+            
+        
     }
 }
 
