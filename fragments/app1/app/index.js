@@ -10,7 +10,7 @@ class App1 extends React.PureComponent {
 
     constructor() {
         super();
-        this.state = { count: 0, App1_1Loaded: false }
+        this.state = { count: 0, App1_1Loaded: false, textToPrint:"printToConsole" }
     }
 
     foundComponent(d) {
@@ -32,7 +32,8 @@ class App1 extends React.PureComponent {
             {this.state.count}
             {JSON.stringify(settings.setting)}
             <button onClick={this.loadNestedApp.bind(this)} >this is a button </button >
-            {this.state.App1_1Loaded?<App1_1 text="printToConsole"> </App1_1> : null}
+            <input type="text" value={this.state.textToPrint} onChange={(event) => {this.setState({textToPrint: event.target.value })}} />
+            {this.state.App1_1Loaded?<App1_1 text={this.state.textToPrint}> </App1_1> : null}
 
             this shows where app1 would go, again</div>)
     }
